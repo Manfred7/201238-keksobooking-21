@@ -1,5 +1,15 @@
 'use strict';
 
+const ADS_COUNT = 8;
+const PRICE_MIN = 100;
+const PRICE_MAX = 300;
+const ROOMS_MIN = 1;
+const ROOMS_MAX = 7;
+const GUESTS_MIN = 1;
+const GUESTS_MAX = 5;
+const LOCATION_Y_MIN= 130;
+const LOCATION_Y_MAX= 130;
+
 const CHECKIN_VARIANTS = [`12:00`, `13:00`, `14:00`];
 const CHECKOUT_VARIANTS = [`12:00`, `13:00`, `14:00`];
 const APPARTMENTS = [`palace`, `flat`, `house`, `bungalow`];
@@ -48,10 +58,10 @@ const getOffer = function (Location) {
   return {
     "title": `строка, заголовок предложения`,
     "address": `${Location.x}, ${Location.y}`,
-    "price": 100, //  число, стоимость
+    "price": getRandomInInterval(PRICE_MIN, PRICE_MAX), //  число, стоимость
     "type": getRandomArrayElement(APPARTMENTS),
-    "rooms": 7,
-    "guests": 3,
+    "rooms": getRandomInInterval(ROOMS_MIN, ROOMS_MAX),
+    "guests": getRandomInInterval(GUESTS_MIN, GUESTS_MAX),
     "checkin": getRandomArrayElement(CHECKIN_VARIANTS),
     "checkout": getRandomArrayElement(CHECKOUT_VARIANTS),
     "features": getRandomLengthArray(FEATURES),
@@ -66,7 +76,7 @@ const createFakeAd = function (idx) {
 
   let tmpLocation = {
     "x": getRandomInInterval(0, MAX_WIDTH), // случайное число, координата x метки на карте. Значение ограничено размерами блока, в котором перетаскивается метка.
-    "y": getRandomInInterval(130, 630) // случайное число, координата y метки на карте от 130 до 630.
+    "y": getRandomInInterval(LOCATION_Y_MIN, LOCATION_Y_MAX) // случайное число, координата y метки на карте от 130 до 630.
   };
   let tmpOffer = getOffer(tmpLocation);
 
@@ -81,7 +91,7 @@ const createFakeAd = function (idx) {
 // создаем массив оюъектов с фейковыми данными
 const makeFakeAds = function () {
   let tmpAds = [];
-  for (let i = 1; i <= 8; i++) {
+  for (let i = 1; i <= ADS_COUNT; i++) {
     let tmpAd = createFakeAd(i);
     tmpAds.push(tmpAd);
   }
