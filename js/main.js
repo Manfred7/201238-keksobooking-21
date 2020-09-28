@@ -7,8 +7,8 @@ const ROOMS_MIN = 1;
 const ROOMS_MAX = 7;
 const GUESTS_MIN = 1;
 const GUESTS_MAX = 5;
-const LOCATION_Y_MIN= 130;
-const LOCATION_Y_MAX= 130;
+const LOCATION_Y_MIN = 130;
+const LOCATION_Y_MAX = 630;
 
 const CHECKIN_VARIANTS = [`12:00`, `13:00`, `14:00`];
 const CHECKOUT_VARIANTS = [`12:00`, `13:00`, `14:00`];
