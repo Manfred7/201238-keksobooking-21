@@ -18,7 +18,7 @@ const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0
 
 const theMapPins = document.querySelector(`.map__pins`);
 const MAX_WIDTH = theMapPins.clientWidth;
-const DELTA_X = document.querySelector(`.map__pin--main`).offsetWidth;
+const DELTA_X = document.querySelector(`.map__pin--main`).offsetWidth / 2;
 const DELTA_Y = document.querySelector(`.map__pin--main`).offsetHeight;
 
 // генерирует случайное целое (integer) число от min до max (включительно).
@@ -106,7 +106,7 @@ const renderAd = function (template, adObj) {
   img.src = adObj.author.avatar;
   img.alt = adObj.offer.title;
 
-  adElement.style.left = `${adObj.location.x + DELTA_X}px`;
+  adElement.style.left = `${adObj.location.x - DELTA_X}px`;
   adElement.style.top = `${adObj.location.y + DELTA_Y}px`;
 
   return adElement;
