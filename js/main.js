@@ -9,6 +9,8 @@ const GUESTS_MIN = 1;
 const GUESTS_MAX = 5;
 const LOCATION_Y_MIN = 130;
 const LOCATION_Y_MAX = 630;
+const ENTER_CODE = 13;
+const LEFT_MOUSE_BUTTON_CODE = 0;
 
 const CHECKIN_VARIANTS = [`12:00`, `13:00`, `14:00`];
 const CHECKOUT_VARIANTS = [`12:00`, `13:00`, `14:00`];
@@ -81,16 +83,14 @@ const setActiveState = function () {
   address.setActveState();
 };
 
-
 mapPinMain.addEventListener(`mousedown`, function (evt) {
-  const buttonPressed = evt.button;
-  if (buttonPressed === 0) {
+  if (evt.button === LEFT_MOUSE_BUTTON_CODE) {
     setActiveState();
   }
 });
 
 mapPinMain.addEventListener(`keydown`, function (evt) {
-  if (evt.key === `Enter`) {
+  if (evt.keyCode === ENTER_CODE) {
     setActiveState();
   }
 });
@@ -203,11 +203,7 @@ const roomNumber = document.querySelector(`#room_number`);
 const capacity = document.querySelector(`#capacity`);
 
 const validateRoomsGestAccordance = function (evt) {
-  if (roomNumber.value !== capacity.value) {
-    evt.target.setCustomValidity(`Количество гостей не соответствует количеству комнат!`);
-  } else {
-    evt.target.setCustomValidity(``);
-  }
+  evt.target.setCustomValidity(roomNumber.value !== capacity.value ? `Количество гостей не соответствует количеству комнат!` : ``);
   evt.target.reportValidity();
 };
 
