@@ -9,17 +9,91 @@ const GUESTS_MIN = 1;
 const GUESTS_MAX = 5;
 const LOCATION_Y_MIN = 130;
 const LOCATION_Y_MAX = 630;
+const ENTER_CODE = 13;
+const LEFT_MOUSE_BUTTON_CODE = 0;
 
 const CHECKIN_VARIANTS = [`12:00`, `13:00`, `14:00`];
 const CHECKOUT_VARIANTS = [`12:00`, `13:00`, `14:00`];
-const APPARTMENTS = [`palace`, `flat`, `house`, `bungalow`];
+const APPARTMENTS = [`palace`, `flat`, `house`, `bungalo`];
 const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 
 const theMapPins = document.querySelector(`.map__pins`);
 const MAX_WIDTH = theMapPins.clientWidth;
-const DELTA_X = document.querySelector(`.map__pin--main`).offsetWidth / 2;
-const DELTA_Y = document.querySelector(`.map__pin--main`).offsetHeight;
+
+const theMap = document.querySelector(`.map`);
+const adForm = document.querySelector(`.ad-form`);
+const mapFilters = document.querySelector(`.map__filters`);
+const adFormFieldsets = adForm.querySelectorAll(`fieldset`);
+const mapFiltersFieldsets = mapFilters.querySelectorAll(`fieldset`);
+const mapFilterSelects = mapFilters.querySelectorAll(`.map__filter`);
+const mapPinMain = document.querySelector(`.map__pin--main`);
+
+const DELTA_X = mapPinMain.offsetWidth / 2;
+const DELTA_Y = mapPinMain.offsetHeight;
+
+const address = {
+  addressControl: document.querySelector(`#address`),
+  setAddresCoord: function (x, y) {
+    this.addressControl.value = `${x},${y}`;
+  },
+  setInnactiveState: function () {
+    let mapPinCenterX = mapPinMain.offsetLeft + DELTA_X;
+    let mapPinCenterY = mapPinMain.offsetTop + Math.floor(DELTA_Y / 2);
+    this.setAddresCoord(mapPinCenterX, mapPinCenterY);
+    this.addressControl.disabled = true;
+  },
+  setActveState: function () {
+    let mapPinX = mapPinMain.offsetLeft + DELTA_X;
+    let mapPinY = mapPinMain.offsetTop - DELTA_Y;
+    this.setAddresCoord(mapPinX, mapPinY);
+  }
+};
+
+const disableArrayElements = function (array, disable) {
+  for (let i = 0; i < array.length; i++) {
+    array[i].disabled = disable;
+  }
+};
+
+const setInnactiveState = function () {
+  theMap.classList.add(`map--faded`);
+  adForm.classList.add(`ad-form--disabled`);
+  mapFilters.classList.add(`map__filters--disabled`);
+
+  disableArrayElements(adFormFieldsets, true);
+  disableArrayElements(mapFiltersFieldsets, true);
+  disableArrayElements(mapFilterSelects, true);
+
+  address.setInnactiveState();
+};
+
+const setActiveState = function () {
+  theMap.classList.remove(`map--faded`);
+  adForm.classList.remove(`ad-form--disabled`);
+  mapFilters.classList.remove(`map__filters--disabled`);
+
+  disableArrayElements(adFormFieldsets, false);
+  disableArrayElements(mapFiltersFieldsets, false);
+  disableArrayElements(mapFilterSelects, false);
+
+  const ads = makeFakeAds(); // генерим тестовые данные
+  theMapPins.appendChild(makeFragment(ads)); // сгенерим и добамим сгенеренный фрагмент
+
+  address.setActveState();
+};
+
+mapPinMain.addEventListener(`mousedown`, function (evt) {
+  if (evt.button === LEFT_MOUSE_BUTTON_CODE) {
+    setActiveState();
+  }
+});
+
+mapPinMain.addEventListener(`keydown`, function (evt) {
+  if (evt.keyCode === ENTER_CODE) {
+    setActiveState();
+  }
+});
 
 // генерирует случайное целое (integer) число от min до max (включительно).
 const getRandomInInterval = function (min, max) {
@@ -125,9 +199,16 @@ const makeFragment = function (ads) {
   return fragment;
 };
 
-const theMap = document.querySelector(`.map`);
-theMap.classList.remove(`map--faded`);
+const roomNumber = document.querySelector(`#room_number`);
+const capacity = document.querySelector(`#capacity`);
 
-const ads = makeFakeAds(); // генерим тестовые данные
-theMapPins.appendChild(makeFragment(ads)); // сгенерим и добамим сгенеренный фрагмент
+const validateRoomsGestAccordance = function (evt) {
+  evt.target.setCustomValidity(roomNumber.value !== capacity.value ? `Количество гостей не соответствует количеству комнат!` : ``);
+  evt.target.reportValidity();
+};
+
+capacity.addEventListener(`change`, validateRoomsGestAccordance);
+roomNumber.addEventListener(`change`, validateRoomsGestAccordance);
+
+setInnactiveState();
 
