@@ -30,8 +30,7 @@
     return fragment;
   };
 
-  const createPins = function () {
-    const pinsData = window.data.generate();
+  const createPins = function (pinsData) {
     const pins = makeFragment(pinsData);
     const theMapPins = document.querySelector(`.map__pins`);
     theMapPins.appendChild(pins);
