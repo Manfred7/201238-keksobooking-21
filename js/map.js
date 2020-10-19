@@ -11,11 +11,15 @@
     window.mapFilters.setInnactive();
   };
 
-  const setActiveState = function () {
+  const onLoad = function (pinsData) {
     theMap.classList.remove(`map--faded`);
     window.mapFilters.setActive();
-    window.mapPins.create();
+    window.mapPins.create(pinsData);
     window.form.setActiveState();
+  };
+
+  const setActiveState = function () {
+    window.backend.load(onLoad, window.util.onError);
   };
 
   const mapPinMain = document.querySelector(`.map__pin--main`);
