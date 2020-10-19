@@ -14,7 +14,9 @@
   const onLoad = function (pinsData) {
     theMap.classList.remove(`map--faded`);
     window.mapFilters.setActive();
-    window.mapPins.create(pinsData);
+    window.map.pins = pinsData;
+    const top5Pins = window.mapFilters.getTop5Pins(pinsData);
+    window.map.updateData(top5Pins);
     window.form.setActiveState();
   };
 
@@ -35,9 +37,18 @@
     }
   });
 
+  const closeCard = function () {
+    //
+  };
+
   window.map = {
+    pins: [],
+    closeCard,
     setInnactive: setInnactiveState,
-    setActive: setActiveState
+    setActive: setActiveState,
+    updateData(pinsData) {
+      window.mapPins.create(pinsData);
+    }
   };
 
 })();
