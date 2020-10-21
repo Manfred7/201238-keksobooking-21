@@ -51,12 +51,8 @@
         return pin.offer.type === inputHousingType.value;
       });
 
-      let filtredPins = [];
-      if (inputHousingType.value === `any`) {
-        filtredPins = window.map.pins;
-      } else {
-        filtredPins = sameHousingTypePins;
-      }
+      let filtredPins = (inputHousingType.value === `any`) ? window.map.pins : sameHousingTypePins;
+
       const top5Pins = getTop5Pins(filtredPins);
       window.map.updateData(top5Pins);
       window.map.closeCard();
