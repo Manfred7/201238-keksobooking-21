@@ -33,6 +33,7 @@
   const createPins = function (pinsData) {
     const pins = makeFragment(pinsData);
     const theMapPins = document.querySelector(`.map__pins`);
+    theMapPins.innerHTML = ``;
     theMapPins.appendChild(pins);
   };
 
