@@ -2,6 +2,8 @@
 (function () {
   const ENTER_CODE = 13;
   const LEFT_MOUSE_BUTTON_CODE = 0;
+  const LOCATION_Y_MIN = 130;
+  const LOCATION_Y_MAX = 630;
 
   const mapStates = {
     ACTIVE: 1,
@@ -90,12 +92,12 @@
 
       let coordY = (mapPinMain.offsetTop - shift.y);
 
-      if (coordY > 630) {
-        coordY = 630;
+      if (coordY > LOCATION_Y_MAX) {
+        coordY = LOCATION_Y_MAX;
       }
 
-      if (coordY < 130) {
-        coordY = 130;
+      if (coordY < LOCATION_Y_MIN) {
+        coordY = LOCATION_Y_MIN;
       }
 
       const coordX = (mapPinMain.offsetLeft - shift.x);

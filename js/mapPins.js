@@ -4,8 +4,6 @@
   const DELTA_X = mapPinMain.offsetWidth / 2;
   const DELTA_Y = mapPinMain.offsetHeight;
 
-
-  // создаем ноду с пином и переносим в нее данные из объекта
   const renderAd = function (template, adObj) {
     let adElement = template.cloneNode(true);
     let img = adElement.querySelector(`img`);
@@ -28,7 +26,7 @@
   };
 
   const makeFragment = function (ads) {
-    const pinTemplate = document.querySelector(`#pin`) // берем разметку для метки из шаблона
+    const pinTemplate = document.querySelector(`#pin`)
       .content
       .querySelector(`.map__pin`);
 
@@ -65,14 +63,10 @@
 
   };
 
-
   const createPins = function (pinsData) {
     clearOldPins();
     const pins = makeFragment(pinsData);
     const theMapPins = document.querySelector(`.map__pins`);
-
-    //  theMapPins.innerHTML = ``;  // так мы и метку  map__pin map__pin--main грохаем, может див со спец классом добавить?
-    //  клирить иде в цикле и чекать что нет в доп класа map__pin--main
     theMapPins.appendChild(pins);
   };
 

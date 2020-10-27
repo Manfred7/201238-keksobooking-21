@@ -40,7 +40,6 @@
   };
 
   const address = {
-
     setInnactiveState: function () {
       setInnactiveCoord();
       addressControl.disabled = true;
@@ -54,7 +53,6 @@
     setActveState: function () {
       this.update();
     }
-
   };
 
   const type = document.querySelector(`#type`);
