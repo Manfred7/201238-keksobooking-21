@@ -4,6 +4,7 @@
   const DELTA_X = mapPinMain.offsetWidth / 2;
   const DELTA_Y = mapPinMain.offsetHeight;
 
+
   // создаем ноду с пином и переносим в нее данные из объекта
   const renderAd = function (template, adObj) {
     let adElement = template.cloneNode(true);
@@ -14,6 +15,14 @@
 
     adElement.style.left = `${adObj.location.x - DELTA_X}px`;
     adElement.style.top = `${adObj.location.y + DELTA_Y}px`;
+
+    adElement.addEventListener(`click`, function () {
+      const obj = {
+        element: adElement,
+        data: adObj
+      };
+      window.card.show(obj);
+    });
 
     return adElement;
   };
@@ -30,15 +39,47 @@
     return fragment;
   };
 
+  const clearOldPins = function () {
+    let renderedPins = document.querySelectorAll(`.map__pin`);
+    let pins = Array.prototype.slice.call(renderedPins);
+
+    pins.forEach(function (item) {
+      if (!item.classList.contains(`map__pin--main`)) {
+        item.remove();
+      }
+    });
+
+  };
+
+  const markActivePin = function (pin) {
+    let renderedPins = document.querySelectorAll(`.map__pin`);
+    let pins = Array.prototype.slice.call(renderedPins);
+
+    pins.forEach(function (item) {
+      if (!item.classList.contains(`map__pin--main`)) {
+        item.classList.remove(`map__pin--active`);
+      }
+    });
+
+    pin.classList.add(`map__pin--active`);
+
+  };
+
+
   const createPins = function (pinsData) {
+    clearOldPins();
     const pins = makeFragment(pinsData);
     const theMapPins = document.querySelector(`.map__pins`);
-    theMapPins.innerHTML = ``;
+
+    //  theMapPins.innerHTML = ``;  // так мы и метку  map__pin map__pin--main грохаем, может див со спец классом добавить?
+    //  клирить иде в цикле и чекать что нет в доп класа map__pin--main
     theMapPins.appendChild(pins);
   };
 
   window.mapPins = {
-    create: createPins
+    create: createPins,
+    clear: clearOldPins,
+    markActive: markActivePin
   };
 
 })();
