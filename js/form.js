@@ -11,21 +11,21 @@
   const MAX_PRICE = 1000000;
   const AVATAR_DEFAULT_IMAGE = `img/muffin-grey.svg`;
 
+  const mapPinMain = document.querySelector(`.map__pin--main`);
+  const DELTA_X = mapPinMain.offsetWidth / 2;
+  const DELTA_Y = mapPinMain.offsetHeight;
+
   const adForm = document.querySelector(`.ad-form`);
   const adFormFieldsets = adForm.querySelectorAll(`fieldset`);
 
   const avatarfileChooser = document.querySelector(`.ad-form__field input[type=file]`);
   const avatarPreview = document.querySelector(`.ad-form-header__preview img`);
-  window.initFileChoiser(avatarfileChooser, avatarPreview);
+  window.photoUtils.initFileChoiser(avatarfileChooser, avatarPreview);
 
   const photofileChooser = document.querySelector(`.ad-form__upload input[type=file]`);
   const photoPreviewBox = document.querySelector(`.ad-form__photo`);
 
-  window.initPhotoChouser(photofileChooser, photoPreviewBox);
-
-  const mapPinMain = document.querySelector(`.map__pin--main`);
-  const DELTA_X = mapPinMain.offsetWidth / 2;
-  const DELTA_Y = mapPinMain.offsetHeight;
+  window.photoUtils.initPhotoChouser(photofileChooser, photoPreviewBox);
 
   const addressControl = document.querySelector(`#address`);
 
@@ -40,17 +40,17 @@
   };
 
   const address = {
-    setInnactiveState: function () {
+    setInnactiveState() {
       setInnactiveCoord();
       addressControl.disabled = true;
       addressControl.placeholder = addressControl.value;
     },
-    update: function () {
+    update() {
       const mapPinX = mapPinMain.offsetLeft + DELTA_X;
       const mapPinY = mapPinMain.offsetTop - DELTA_Y;
       setAddresCoord(mapPinX, mapPinY);
     },
-    setActveState: function () {
+    setActveState() {
       this.update();
     }
   };
@@ -111,6 +111,7 @@
   const roomNumber = document.querySelector(`#room_number`);
   const capacity = document.querySelector(`#capacity`);
 
+
   const validateRoomsGestAccordance = function (evt) {
     let validityMessage = ``;
 
@@ -152,21 +153,54 @@
   };
 
   const setInnactive = function () {
-    window.util.disableArrayElements(adFormFieldsets, true);
+    window.utils.disableArrayElements(adFormFieldsets, true);
     adForm.classList.add(`ad-form--disabled`);
     address.setInnactiveState();
 
     adForm.reset();
-    window.cardPhoto.clearPhotoBox();
+    window.photoUtils.clearPhotoBox();
     setDefaultAvatar();
   };
 
   const setActive = function () {
     adForm.classList.remove(`ad-form--disabled`);
-    window.util.disableArrayElements(adFormFieldsets, false);
+    window.utils.disableArrayElements(adFormFieldsets, false);
+    capacity.selectedIndex = 2;
     address.setActveState();
   };
 
+  const initCloseMessage = function (element) {
+    let removeListeners = null;
+
+    const closeMsg = function () {
+      element.remove();
+      removeListeners();
+    };
+
+    const onBodyClick = function () {
+      closeMsg();
+    };
+
+    document.body.addEventListener(`click`, onBodyClick);
+
+    const onPopupEscPress = function (evt) {
+      window.eventUtils.isEscEventWithPreventDefault(evt, closeMsg);
+    };
+
+    document.body.addEventListener(`keydown`, onPopupEscPress);
+
+    const errorButton = element.querySelector(`.error__button`);
+
+    if (errorButton !== null) {
+      errorButton.addEventListener(`click`, onBodyClick);
+    }
+
+    removeListeners = function () {
+      document.body.removeEventListener(`click`, onBodyClick);
+      document.body.removeEventListener(`keydown`, onPopupEscPress);
+    };
+
+  };
   const showSuccesMsg = function () {
     const template = document.querySelector(`#success `)
       .content
@@ -176,20 +210,7 @@
     const theMap = document.querySelector(`.map`);
     theMap.appendChild(element);
 
-    const doClose = function () {
-      element.remove();
-      document.body.removeEventListener(doClose);
-    };
-
-    document.body.addEventListener(`click`, doClose);
-
-    const onPopupEscPress = function (evt) {
-      if (evt.keyCode === window.eventUtils.ESC_CODE) {
-        evt.preventDefault();
-        doClose();
-      }
-    };
-    document.body.addEventListener(`keydown`, onPopupEscPress);
+    initCloseMessage(element);
   };
 
   const onSucces = function () {
@@ -209,45 +230,18 @@
     const main = document.querySelector(`main`);
     main.insertAdjacentElement(`afterbegin`, element);
 
-    let removeListeners = null;
-
-    const closeMsg = function () {
-      element.remove();
-      removeListeners();
-    };
-
-    const onBodyClick = function () {
-      closeMsg();
-    };
-
-    document.body.addEventListener(`click`, onBodyClick);
-
-    const onPopupEscPress = function (evt) {
-      if (evt.keyCode === window.eventUtils.ESC_CODE) {
-        evt.preventDefault();
-        closeMsg();
-      }
-    };
-
-    document.body.addEventListener(`keydown`, onPopupEscPress);
-
-    const errorButton = element.querySelector(`.error__button`);
-    errorButton.addEventListener(`click`, onBodyClick);
-
-    removeListeners = function () {
-      document.body.removeEventListener(`click`, onBodyClick);
-      document.body.removeEventListener(`keydown`, onPopupEscPress);
-    };
+    initCloseMessage(element);
   };
 
   const onError = function (errorMessage) {
     showErrorMsg(errorMessage);
   };
 
+
   const submitHandler = function (evt) {
     let data = new FormData(adForm);
     data.append(`address`, addressControl.value);
-    window.backend.save(data, onSucces, onError);
+    window.backendAPI.save(data, onSucces, onError);
     evt.preventDefault();
   };
   adForm.addEventListener(`submit`, submitHandler);

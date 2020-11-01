@@ -11,7 +11,7 @@
   const URL = `https://21.javascript.pages.academy/keksobooking`;
 
 
-  const getNewXHR = function (onSuccess, onError) {
+  const getRequest = function (onSuccess, onError) {
     let xhr = new XMLHttpRequest();
     xhr.responseType = RESPONSE_TYPE;
     xhr.timeout = TIMEOUT_IN_MS;
@@ -37,19 +37,19 @@
   };
 
   const uploadToServer = function (data, onSuccess, onError) {
-    const xhr = getNewXHR(onSuccess, onError);
+    const xhr = getRequest(onSuccess, onError);
     xhr.open(`POST`, URL);
     xhr.send(data);
   };
 
   const loadFromServer = function (onSuccess, onError) {
     const dataURL = URL + `/data`;
-    const xhr = getNewXHR(onSuccess, onError);
+    const xhr = getRequest(onSuccess, onError);
     xhr.open(`GET`, dataURL);
     xhr.send();
   };
 
-  window.backend = {
+  window.backendAPI = {
     load: loadFromServer,
     save: uploadToServer
   };

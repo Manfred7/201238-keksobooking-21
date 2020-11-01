@@ -25,15 +25,15 @@
     return {
       "title": `строка, заголовок предложения`,
       "address": `${Location.x}, ${Location.y}`,
-      "price": window.util.getRandomInInterval(PRICE_MIN, PRICE_MAX), //  число, стоимость
-      "type": window.util.getRandomArrayElement(APPARTMENTS),
-      "rooms": window.util.getRandomInInterval(ROOMS_MIN, ROOMS_MAX),
-      "guests": window.util.getRandomInInterval(GUESTS_MIN, GUESTS_MAX),
-      "checkin": window.util.getRandomArrayElement(CHECKIN_VARIANTS),
-      "checkout": window.util.getRandomArrayElement(CHECKOUT_VARIANTS),
-      "features": window.util.getRandomLengthArray(FEATURES),
+      "price": window.utils.getRandomInInterval(PRICE_MIN, PRICE_MAX), //  число, стоимость
+      "type": window.utils.getRandomArrayElement(APPARTMENTS),
+      "rooms": window.utils.getRandomInInterval(ROOMS_MIN, ROOMS_MAX),
+      "guests": window.utils.getRandomInInterval(GUESTS_MIN, GUESTS_MAX),
+      "checkin": window.utils.getRandomArrayElement(CHECKIN_VARIANTS),
+      "checkout": window.utils.getRandomArrayElement(CHECKOUT_VARIANTS),
+      "features": window.utils.getRandomLengthArray(FEATURES),
       "description": `строка с описанием`,
-      "photos": window.util.getRandomLengthArray(PHOTOS),
+      "photos": window.utils.getRandomLengthArray(PHOTOS),
     };
   };
 
@@ -41,8 +41,8 @@
     const tmpaAthor = getAuthor(idx);
 
     const tmpLocation = {
-      "x": window.util.getRandomInInterval(0, window.globalConsts.MAX_WIDTH), // случайное число, координата x метки на карте. Значение ограничено размерами блока, в котором перетаскивается метка.
-      "y": window.util.getRandomInInterval(LOCATION_Y_MIN, LOCATION_Y_MAX) // случайное число, координата y метки на карте от 130 до 630.
+      "x": window.utils.getRandomInInterval(0, window.globals.MAX_WIDTH), // случайное число, координата x метки на карте. Значение ограничено размерами блока, в котором перетаскивается метка.
+      "y": window.utils.getRandomInInterval(LOCATION_Y_MIN, LOCATION_Y_MAX) // случайное число, координата y метки на карте от 130 до 630.
     };
     const tmpOffer = getOffer(tmpLocation);
 
@@ -51,6 +51,7 @@
       "offer": tmpOffer,
       "location": tmpLocation
     };
+
     return tmpAd;
   };
 

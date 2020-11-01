@@ -1,22 +1,21 @@
 'use strict';
 (function () {
-  const ENTER_CODE = 13;
+
   const LEFT_MOUSE_BUTTON_CODE = 0;
   const LOCATION_Y_MIN = 130;
   const LOCATION_Y_MAX = 630;
 
-  const mapStates = {
+  const MapStates = {
     ACTIVE: 1,
     INNACTIVE: 0
   };
 
-  let State = mapStates.INNACTIVE;
+  let State = MapStates.INNACTIVE;
   const theMap = document.querySelector(`.map`);
 
   const mapPinMain = document.querySelector(`.map__pin--main`);
   const startX = mapPinMain.style.left;
   const startY = mapPinMain.style.top;
-
 
   const setInnactiveState = function () {
     theMap.classList.add(`map--faded`);
@@ -24,25 +23,25 @@
     mapPinMain.style.left = startX;
     window.mapPins.clear();
     window.card.close();
-    window.mapFilters.setInnactive();
+    window.filters.setInnactive();
     window.form.setInnactiveState();
 
-    State = mapStates.INNACTIVE;
+    State = MapStates.INNACTIVE;
   };
 
   const onLoad = function (pinsData) {
     theMap.classList.remove(`map--faded`);
-    window.mapFilters.setActive();
-    window.map.pins = window.mapFilters.getOnlyWithOffer(pinsData);
-    const top5Pins = window.mapFilters.getTop5Pins(window.map.pins);
+    window.filters.setActive();
+    window.map.pins = window.filters.getOnlyWithOffer(pinsData);
+    const top5Pins = window.filters.getTop5Pins(window.map.pins);
     window.map.updateData(top5Pins);
     window.form.setActiveState();
   };
 
   const setActiveState = function () {
-    if (State === mapStates.INNACTIVE) { // не нужно при каждом движении метки все перезагружать, только при первом
-      State = mapStates.ACTIVE;
-      window.backend.load(onLoad, window.util.onError);
+    if (State === MapStates.INNACTIVE) { // не нужно при каждом движении метки все перезагружать, только при первом
+      State = MapStates.ACTIVE;
+      window.backendAPI.load(onLoad, window.utils.onError);
     }
 
   };
@@ -54,9 +53,7 @@
   });
 
   mapPinMain.addEventListener(`keydown`, function (evt) {
-    if (evt.keyCode === ENTER_CODE) {
-      setActiveState();
-    }
+    window.eventUtils.isEnterEventWithPreventDefault(evt, setActiveState);
   });
 
 
@@ -139,7 +136,6 @@
     setActive: setActiveState,
     updateData(pinsData) {
       window.mapPins.create(pinsData);
-      //  window.card.show(pinsData[0]);
     }
   };
 

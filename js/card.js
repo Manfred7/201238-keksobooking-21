@@ -2,48 +2,45 @@
 (function () {
 
   const NOT_FOUND = -1;
-  let popupCard = null;
-  const theMapFilterContainer = document.querySelector(`.map__filters-container`);
 
-  const offerTypeDict = {
-    flat: `Квартира`,
-    bungalow: `Бунгало`,
-    house: `Дом`,
-    palace: `Дворец`
+  const OfferTypeDict = {
+    FLAT: `Квартира`,
+    BUNGALOW: `Бунгало`,
+    HOUSE: `Дом`,
+    PALACE: `Дворец`
   };
 
+  let popupCard = null;
+  const mapFilterContainer = document.querySelector(`.map__filters-container`);
+
+
   const showFeatures = function (ad, element) {
-    let popupFeatures = element.querySelector(`.popup__features`);
 
-    let featureWifi = popupFeatures.querySelector(`.popup__feature--wifi`);
-    if (ad.offer.features.indexOf(`wifi`) === NOT_FOUND) {
-      featureWifi.remove();
-    }
+    const removeIfNotFound = function (features, searchValue, node) {
+      if (features.indexOf(searchValue) === NOT_FOUND) {
+        node.remove();
+      }
+    };
 
-    let featureDishwasher = popupFeatures.querySelector(`.popup__feature--dishwasher`);
-    if (ad.offer.features.indexOf(`dishwasher`) === NOT_FOUND) {
-      featureDishwasher.remove();
-    }
+    const popupFeatures = element.querySelector(`.popup__features`);
 
-    let featureParking = popupFeatures.querySelector(`.popup__feature--parking`);
-    if (ad.offer.features.indexOf(`parking`) === NOT_FOUND) {
-      featureParking.remove();
-    }
+    const featureWifi = popupFeatures.querySelector(`.popup__feature--wifi`);
+    removeIfNotFound(ad.offer.features, window.globals.Features.WIFI, featureWifi);
 
-    let featureWasher = popupFeatures.querySelector(`.popup__feature--washer`);
-    if (ad.offer.features.indexOf(`washer`) === NOT_FOUND) {
-      featureWasher.remove();
-    }
+    const featureDishwasher = popupFeatures.querySelector(`.popup__feature--dishwasher`);
+    removeIfNotFound(ad.offer.features, window.globals.Features.DISHWASHER, featureDishwasher);
 
-    let featureElevator = popupFeatures.querySelector(`.popup__feature--elevator`);
-    if (ad.offer.features.indexOf(`elevator`) === NOT_FOUND) {
-      featureElevator.remove();
-    }
+    const featureParking = popupFeatures.querySelector(`.popup__feature--parking`);
+    removeIfNotFound(ad.offer.features, window.globals.Features.PARKING, featureParking);
 
-    let featureConditioner = popupFeatures.querySelector(`.popup__feature--conditioner`);
-    if (ad.offer.features.indexOf(`conditioner`) === NOT_FOUND) {
-      featureConditioner.remove();
-    }
+    const featureWasher = popupFeatures.querySelector(`.popup__feature--washer`);
+    removeIfNotFound(ad.offer.features, window.globals.Features.WASHER, featureWasher);
+
+    const featureElevator = popupFeatures.querySelector(`.popup__feature--elevator`);
+    removeIfNotFound(ad.offer.features, window.globals.Features.ELEVATOR, featureElevator);
+
+    const featureConditioner = popupFeatures.querySelector(`.popup__feature--conditioner`);
+    removeIfNotFound(ad.offer.features, window.globals.Features.CONDITIONER, featureConditioner);
   };
 
   const showPhotos = function (ad, element) {
@@ -89,7 +86,7 @@
   const showPopupType = function (ad, element) {
     let popupType = element.querySelector(`.popup__type`);
     if (ad.offer.type !== ``) {
-      popupType.innerText = offerTypeDict[ad.offer.type];
+      popupType.innerText = OfferTypeDict[ad.offer.type.toString().toUpperCase()];
     } else {
       popupType.remove();
     }
@@ -148,6 +145,7 @@
     showDescription(ad, adElement);
     showPhotos(ad, adElement);
     showAvatar(ad, adElement);
+
     return adElement;
   };
 
@@ -164,14 +162,12 @@
 
   const createCard = function (pinData) {
     const cardFragment = makeFragment(pinData);
-    return theMapFilterContainer.parentElement.appendChild(cardFragment);
+
+    return mapFilterContainer.parentElement.appendChild(cardFragment);
   };
 
   const onPopupEscPress = function (evt) {
-    if (evt.keyCode === window.eventUtils.ESC_CODE) {
-      evt.preventDefault();
-      closeCard();
-    }
+    window.eventUtils.isEscEventWithPreventDefault(evt, closeCard);
   };
 
   const setPopupListeners = function () {

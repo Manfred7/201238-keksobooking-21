@@ -33,6 +33,7 @@
     } else {
       const newNode = createPreviewPhotoElemet();
       previewBox.appendChild(newNode.element);
+
       return newNode;
     }
   };
@@ -43,11 +44,6 @@
       node.remove();
     }
   };
-
-  window.cardPhoto = {
-    clearPhotoBox
-  };
-
 
   const checkFileExt = function (file) {
     const fileName = file.name.toLowerCase();
@@ -67,7 +63,7 @@
     reader.readAsDataURL(file);
   };
 
-  window.initFileChoiser = function (fileChooser, preview) {
+  const initFileChoiser = function (fileChooser, preview) {
     const onFileChouse = function () {
       const file = fileChooser.files[0];
       if (checkFileExt(file)) {
@@ -78,7 +74,7 @@
     fileChooser.addEventListener(`change`, onFileChouse);
   };
 
-  window.initPhotoChouser = function (fileChooser, previewBox) {
+  const initPhotoChouser = function (fileChooser, previewBox) {
 
     const onPhotoChouse = function () {
       const file = fileChooser.files[0];
@@ -92,5 +88,9 @@
     fileChooser.addEventListener(`change`, onPhotoChouse);
   };
 
-
+  window.photoUtils = {
+    clearPhotoBox,
+    initPhotoChouser: initPhotoChouser,
+    initFileChoiser: initFileChoiser
+  };
 })();

@@ -19,14 +19,6 @@
   const inputElevator = fieldsetMapFeatures.querySelector(`#filter-elevator`);
   const inputConditioner = fieldsetMapFeatures.querySelector(`#filter-conditioner`);
 
-  const features = {
-    wifi: `wifi`,
-    dishwasher: `dishwasher`,
-    parking: `filter-parking`,
-    washer: `washer`,
-    conditioner: `conditioner`,
-    elevator: `elevator`
-  };
 
   const getOnlyWithOffer = function (pins) {
     const onlyWithOfferPins = pins.filter(function (pin) {
@@ -51,6 +43,7 @@
     const samePins = pins.filter(function (pin) {
       return pin.offer.type === inputHousingType.value;
     });
+
     let filtredPins = (inputHousingType.value === ANY_VALUE) ? pins : samePins;
 
     return filtredPins;
@@ -79,6 +72,7 @@
     const samePins = pins.filter(function (pin) {
       return (pin.offer.rooms.toString() === inputHousingRooms.value);
     });
+
     let filtredPins = (inputHousingRooms.value === ANY_VALUE) ? pins : samePins;
 
     return filtredPins;
@@ -96,23 +90,24 @@
     let enabledFeatures = [];
 
     if (inputWifi.checked) {
-      enabledFeatures.push(features.wifi);
+      enabledFeatures.push(window.globals.Features.WIFI);
     }
     if (inputDishwasher.checked) {
-      enabledFeatures.push(features.dishwasher);
+      enabledFeatures.push(window.globals.Features.DISHWASHER);
     }
     if (inputParking.checked) {
-      enabledFeatures.push(features.parking);
+      enabledFeatures.push(window.globals.Features.PARKING);
     }
     if (inputWasher.checked) {
-      enabledFeatures.push(features.washer);
+      enabledFeatures.push(window.globals.Features.WASHER);
     }
     if (inputConditioner.checked) {
-      enabledFeatures.push(features.conditioner);
+      enabledFeatures.push(window.globals.Features.CONDITIONER);
     }
     if (inputElevator.checked) {
-      enabledFeatures.push(features.elevator);
+      enabledFeatures.push(window.globals.Features.ELEVATOR);
     }
+
     return enabledFeatures;
   };
 
@@ -125,16 +120,18 @@
       enabledFeatures.forEach(function (item) {
         if (pin.offer.features.indexOf(item) === -1) {
           allFeaturesExist = false;
+
           return;
         }
       });
 
       return allFeaturesExist;
     });
+
     return samePins;
   };
 
-  const doFilter = function () {
+  const filterPins = function () {
     let filtredPins = getHousingTypeFiltred(window.map.pins);
     filtredPins = getHousingPriceFiltred(filtredPins);
     filtredPins = getHousingRoomsFiltred(filtredPins);
@@ -147,20 +144,20 @@
   };
 
   const applyFilter = function () {
-    window.debounce(doFilter);
+    window.debounce(filterPins);
 
   };
   const setInnactiveState = function () {
     mapFilters.classList.add(`map__filters--disabled`);
-    window.util.disableArrayElements(mapFiltersFieldsets, true);
-    window.util.disableArrayElements(mapFilterSelects, true);
+    window.utils.disableArrayElements(mapFiltersFieldsets, true);
+    window.utils.disableArrayElements(mapFilterSelects, true);
     mapFilters.reset();
   };
 
   const setActiveState = function () {
     mapFilters.classList.remove(`map__filters--disabled`);
-    window.util.disableArrayElements(mapFiltersFieldsets, false);
-    window.util.disableArrayElements(mapFilterSelects, false);
+    window.utils.disableArrayElements(mapFiltersFieldsets, false);
+    window.utils.disableArrayElements(mapFilterSelects, false);
 
     inputHousingType.addEventListener(`change`, applyFilter);
     inputHousingPrice.addEventListener(`change`, applyFilter);
@@ -169,7 +166,7 @@
     fieldsetMapFeatures.addEventListener(`change`, applyFilter);
   };
 
-  window.mapFilters = {
+  window.filters = {
     getOnlyWithOffer,
     getTop5Pins,
     setInnactive: setInnactiveState,

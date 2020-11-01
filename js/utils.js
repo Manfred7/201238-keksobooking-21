@@ -20,6 +20,7 @@
 
   const getRandomInInterval = function (min, max) {
     let rand = min + Math.random() * (max + 1 - min);
+
     return Math.floor(rand);
   };
 
@@ -39,10 +40,11 @@
     for (let i = 0; i < length; i++) {
       resultArr.push(sourcArray[i]);
     }
+
     return resultArr;
   };
 
-  window.util = {
+  window.utils = {
     onError: showError,
     disableArrayElements: disableArrayElements,
     getRandomInInterval: getRandomInInterval,
