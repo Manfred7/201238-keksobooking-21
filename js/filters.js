@@ -3,6 +3,15 @@
 
   const MAX_PINS_COUNT = 5;
   const ANY_VALUE = `any`;
+  const LOW_PRICE_LIMIT = 10000;
+  const HIGH_PRICE_LIMIT = 50000;
+
+  const PriceType = {
+    LOW: `low`,
+    MIDDLE: `middle`,
+    HIGH: `high`
+  };
+
   const mapFilters = document.querySelector(`.map__filters`);
   const mapFiltersFieldsets = mapFilters.querySelectorAll(`fieldset`);
   const mapFilterSelects = mapFilters.querySelectorAll(`.map__filter`);
@@ -18,7 +27,6 @@
   const inputWasher = fieldsetMapFeatures.querySelector(`#filter-washer`);
   const inputElevator = fieldsetMapFeatures.querySelector(`#filter-elevator`);
   const inputConditioner = fieldsetMapFeatures.querySelector(`#filter-conditioner`);
-
 
   const getOnlyWithOffer = function (pins) {
     const onlyWithOfferPins = pins.filter(function (pin) {
@@ -52,12 +60,12 @@
   const getHousingPriceFiltred = function (pins) {
     const samePins = pins.filter(function (pin) {
       switch (inputHousingPrice.value) {
-        case `low`:
-          return (pin.offer.price < 10000);
-        case `middle`:
-          return (pin.offer.price >= 10000) && (pin.offer.price <= 50000);
-        case `high`:
-          return (pin.offer.price > 50000);
+        case PriceType.LOW:
+          return (pin.offer.price < LOW_PRICE_LIMIT);
+        case PriceType.MIDDLE:
+          return (pin.offer.price >= LOW_PRICE_LIMIT) && (pin.offer.price <= HIGH_PRICE_LIMIT);
+        case PriceType.HIGH:
+          return (pin.offer.price > HIGH_PRICE_LIMIT);
         default:
           return false;
       }

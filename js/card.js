@@ -13,7 +13,6 @@
   let popupCard = null;
   const mapFilterContainer = document.querySelector(`.map__filters-container`);
 
-
   const showFeatures = function (ad, element) {
 
     const removeIfNotFound = function (features, searchValue, node) {
@@ -185,7 +184,6 @@
     });
 
   };
-
 
   const showCard = function (obj) {
     if (popupCard !== null) {

@@ -10,7 +10,6 @@
   const RESPONSE_TYPE = `json`;
   const URL = `https://21.javascript.pages.academy/keksobooking`;
 
-
   const getRequest = function (onSuccess, onError) {
     let xhr = new XMLHttpRequest();
     xhr.responseType = RESPONSE_TYPE;
