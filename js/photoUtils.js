@@ -1,9 +1,8 @@
 'use strict';
-
-(function () {
+(() => {
   let FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 
-  const createPreviewPhotoElemet = function () {
+  const createPreviewPhotoElement = () => {
     const node = document.createElement(`div`);
     node.classList.add(`ad-form__photo__item`);
 
@@ -21,7 +20,7 @@
 
   };
 
-  const getPreviewPhotoElement = function (previewBox) {
+  const getPreviewPhotoElement = (previewBox) => {
     const node = document.querySelector(`.ad-form__photo__item`);
 
     if (node !== null) {
@@ -31,40 +30,40 @@
       };
 
     } else {
-      const newNode = createPreviewPhotoElemet();
+      const newNode = createPreviewPhotoElement();
       previewBox.appendChild(newNode.element);
 
       return newNode;
     }
   };
 
-  const clearPhotoBox = function () {
+  const clearPhotoBox = () => {
     const node = document.querySelector(`.ad-form__photo__item`);
     if (node !== null) {
       node.remove();
     }
   };
 
-  const checkFileExt = function (file) {
+  const checkFileExt = (file) => {
     const fileName = file.name.toLowerCase();
-    const matches = FILE_TYPES.some(function (it) {
+    const matches = FILE_TYPES.some((it) => {
       return fileName.endsWith(it);
     });
 
     return matches;
   };
 
-  const doLoad = function (file, preview) {
+  const doLoad = (file, preview) => {
     const reader = new FileReader();
-    reader.addEventListener(`load`, function () {
+    reader.addEventListener(`load`, () => {
       preview.src = reader.result;
     });
 
     reader.readAsDataURL(file);
   };
 
-  const initFileChoiser = function (fileChooser, preview) {
-    const onFileChouse = function () {
+  const initFileChoiser = (fileChooser, preview) => {
+    const onFileChouse = () => {
       const file = fileChooser.files[0];
       if (checkFileExt(file)) {
         doLoad(file, preview);
@@ -74,9 +73,9 @@
     fileChooser.addEventListener(`change`, onFileChouse);
   };
 
-  const initPhotoChouser = function (fileChooser, previewBox) {
+  const initPhotoChouser = (fileChooser, previewBox) => {
 
-    const onPhotoChouse = function () {
+    const onPhotoChouse = () => {
       const file = fileChooser.files[0];
       if (checkFileExt(file)) {
         let node = getPreviewPhotoElement(previewBox);

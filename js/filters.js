@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+(() => {
 
   const MAX_PINS_COUNT = 5;
   const ANY_VALUE = `any`;
@@ -28,15 +28,15 @@
   const inputElevator = fieldsetMapFeatures.querySelector(`#filter-elevator`);
   const inputConditioner = fieldsetMapFeatures.querySelector(`#filter-conditioner`);
 
-  const getOnlyWithOffer = function (pins) {
-    const onlyWithOfferPins = pins.filter(function (pin) {
+  const getOnlyWithOffer = (pins) => {
+    const onlyWithOfferPins = pins.filter((pin) => {
       return ((pin.offer !== undefined) && (pin.offer !== null));
     });
 
     return onlyWithOfferPins;
   };
 
-  const getTop5Pins = function (arr) {
+  const getTop5Pins = (arr) => {
     let result = [];
     let count = arr.length <= MAX_PINS_COUNT ? arr.length : MAX_PINS_COUNT;
 
@@ -47,18 +47,16 @@
     return result;
   };
 
-  const getHousingTypeFiltred = function (pins) {
-    const samePins = pins.filter(function (pin) {
+  const getHousingTypeFiltered = (pins) => {
+    const samePins = pins.filter((pin) => {
       return pin.offer.type === inputHousingType.value;
     });
 
-    let filtredPins = (inputHousingType.value === ANY_VALUE) ? pins : samePins;
-
-    return filtredPins;
+    return (inputHousingType.value === ANY_VALUE) ? pins : samePins;
   };
 
-  const getHousingPriceFiltred = function (pins) {
-    const samePins = pins.filter(function (pin) {
+  const getHousingPriceFiltred = (pins) => {
+    const samePins = pins.filter((pin) => {
       switch (inputHousingPrice.value) {
         case PriceType.LOW:
           return (pin.offer.price < LOW_PRICE_LIMIT);
@@ -71,30 +69,25 @@
       }
     });
 
-    let filtredPins = (inputHousingPrice.value === ANY_VALUE) ? pins : samePins;
-
-    return filtredPins;
+    return (inputHousingPrice.value === ANY_VALUE) ? pins : samePins;
   };
 
-  const getHousingRoomsFiltred = function (pins) {
-    const samePins = pins.filter(function (pin) {
+  const getHousingRoomsFiltred = (pins) => {
+    const samePins = pins.filter((pin) => {
       return (pin.offer.rooms.toString() === inputHousingRooms.value);
     });
 
-    let filtredPins = (inputHousingRooms.value === ANY_VALUE) ? pins : samePins;
-
-    return filtredPins;
+    return (inputHousingRooms.value === ANY_VALUE) ? pins : samePins;
   };
 
-  const getHousingGuestFiltred = function (pins) {
-    const samePins = pins.filter(function (pin) {
+  const getHousingGuestFiltred = (pins) => {
+    const samePins = pins.filter((pin) => {
       return (pin.offer.guests.toString() === inputHousingGuests.value);
     });
-    let filtredPins = (inputHousingGuests.value === ANY_VALUE) ? pins : samePins;
 
-    return filtredPins;
+    return (inputHousingGuests.value === ANY_VALUE) ? pins : samePins;
   };
-  const getEnabledFeatures = function () {
+  const getEnabledFeatures = () => {
     let enabledFeatures = [];
 
     if (inputWifi.checked) {
@@ -119,13 +112,13 @@
     return enabledFeatures;
   };
 
-  const getHousingFeaturesFiltred = function (pins) {
+  const getHousingFeaturesFiltred = (pins) => {
     const enabledFeatures = getEnabledFeatures();
 
-    const samePins = pins.filter(function (pin) {
+    const samePins = pins.filter((pin) => {
       let allFeaturesExist = true;
 
-      enabledFeatures.forEach(function (item) {
+      enabledFeatures.forEach((item) => {
         if (pin.offer.features.indexOf(item) === -1) {
           allFeaturesExist = false;
 
@@ -139,8 +132,8 @@
     return samePins;
   };
 
-  const filterPins = function () {
-    let filtredPins = getHousingTypeFiltred(window.map.pins);
+  const filterPins = () => {
+    let filtredPins = getHousingTypeFiltered(window.map.pins);
     filtredPins = getHousingPriceFiltred(filtredPins);
     filtredPins = getHousingRoomsFiltred(filtredPins);
     filtredPins = getHousingGuestFiltred(filtredPins);
@@ -151,18 +144,18 @@
     window.map.closeCard();
   };
 
-  const applyFilter = function () {
+  const applyFilter = () => {
     window.debounce(filterPins);
 
   };
-  const setInnactiveState = function () {
+  const setInnactiveState = () => {
     mapFilters.classList.add(`map__filters--disabled`);
     window.utils.disableArrayElements(mapFiltersFieldsets, true);
     window.utils.disableArrayElements(mapFilterSelects, true);
     mapFilters.reset();
   };
 
-  const setActiveState = function () {
+  const setActiveState = () => {
     mapFilters.classList.remove(`map__filters--disabled`);
     window.utils.disableArrayElements(mapFiltersFieldsets, false);
     window.utils.disableArrayElements(mapFilterSelects, false);

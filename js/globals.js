@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+(() => {
   const theMapPins = document.querySelector(`.map__pins`);
 
   const Features = {

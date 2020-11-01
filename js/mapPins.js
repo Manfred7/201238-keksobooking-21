@@ -1,10 +1,10 @@
 'use strict';
-(function () {
+(() => {
   const mapPinMain = document.querySelector(`.map__pin--main`);
-  const DELTA_X = mapPinMain.offsetWidth / 2;
+  const DELTA_X = Math.floor(mapPinMain.offsetWidth / 2);
   const DELTA_Y = mapPinMain.offsetHeight;
 
-  const renderAd = function (template, adObj) {
+  const renderAd = (template, adObj) => {
     let adElement = template.cloneNode(true);
     let img = adElement.querySelector(`img`);
 
@@ -14,7 +14,7 @@
     adElement.style.left = `${adObj.location.x - DELTA_X}px`;
     adElement.style.top = `${adObj.location.y + DELTA_Y}px`;
 
-    adElement.addEventListener(`click`, function () {
+    adElement.addEventListener(`click`, () => {
       const obj = {
         element: adElement,
         data: adObj
@@ -25,7 +25,7 @@
     return adElement;
   };
 
-  const makeFragment = function (ads) {
+  const makeFragment = (ads) => {
     const pinTemplate = document.querySelector(`#pin`)
       .content
       .querySelector(`.map__pin`);
@@ -37,11 +37,11 @@
     return fragment;
   };
 
-  const clearOldPins = function () {
+  const clearOldPins = () => {
     let renderedPins = document.querySelectorAll(`.map__pin`);
     let pins = Array.prototype.slice.call(renderedPins);
 
-    pins.forEach(function (item) {
+    pins.forEach((item) => {
       if (!item.classList.contains(`map__pin--main`)) {
         item.remove();
       }
@@ -49,11 +49,11 @@
 
   };
 
-  const markActivePin = function (pin) {
+  const markActivePin = (pin) => {
     let renderedPins = document.querySelectorAll(`.map__pin`);
     let pins = Array.prototype.slice.call(renderedPins);
 
-    pins.forEach(function (item) {
+    pins.forEach((item) => {
       if (!item.classList.contains(`map__pin--main`)) {
         item.classList.remove(`map__pin--active`);
       }
@@ -63,7 +63,7 @@
 
   };
 
-  const createPins = function (pinsData) {
+  const createPins = (pinsData) => {
     clearOldPins();
     const pins = makeFragment(pinsData);
     const theMapPins = document.querySelector(`.map__pins`);

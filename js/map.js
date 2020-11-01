@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+(() => {
 
   const LEFT_MOUSE_BUTTON_CODE = 0;
   const LOCATION_Y_MIN = 130;
@@ -17,7 +17,7 @@
   const startX = mapPinMain.style.left;
   const startY = mapPinMain.style.top;
 
-  const setInnactiveState = function () {
+  const setInnactiveState = () => {
     theMap.classList.add(`map--faded`);
     mapPinMain.style.top = startY;
     mapPinMain.style.left = startX;
@@ -29,7 +29,7 @@
     State = MapStates.INNACTIVE;
   };
 
-  const onLoad = function (pinsData) {
+  const onLoad = (pinsData) => {
     theMap.classList.remove(`map--faded`);
     window.filters.setActive();
     window.map.pins = window.filters.getOnlyWithOffer(pinsData);
@@ -38,7 +38,7 @@
     window.form.setActiveState();
   };
 
-  const setActiveState = function () {
+  const setActiveState = () => {
     if (State === MapStates.INNACTIVE) { // не нужно при каждом движении метки все перезагружать, только при первом
       State = MapStates.ACTIVE;
       window.backendAPI.load(onLoad, window.utils.onError);
@@ -46,18 +46,18 @@
 
   };
 
-  mapPinMain.addEventListener(`mousedown`, function (evt) {
+  mapPinMain.addEventListener(`mousedown`, (evt) => {
     if (evt.button === LEFT_MOUSE_BUTTON_CODE) {
       setActiveState();
     }
   });
 
-  mapPinMain.addEventListener(`keydown`, function (evt) {
+  mapPinMain.addEventListener(`keydown`, (evt) => {
     window.eventUtils.isEnterEventWithPreventDefault(evt, setActiveState);
   });
 
 
-  mapPinMain.addEventListener(`mousedown`, function (evt) {
+  mapPinMain.addEventListener(`mousedown`, (evt) => {
 
     if (evt.button === LEFT_MOUSE_BUTTON_CODE) {
       setActiveState();
@@ -72,7 +72,7 @@
 
     let dragged = false;
 
-    const onMouseMove = function (moveEvt) {
+    const onMouseMove = (moveEvt) => {
       moveEvt.preventDefault();
 
       dragged = true;
@@ -106,14 +106,14 @@
 
     };
 
-    const onMouseUp = function (upEvt) {
+    const onMouseUp = (upEvt) => {
       upEvt.preventDefault();
 
       document.removeEventListener(`mousemove`, onMouseMove);
       document.removeEventListener(`mouseup`, onMouseUp);
 
       if (dragged) {
-        const onClickPreventDefault = function (clickEvt) {
+        const onClickPreventDefault = (clickEvt) => {
           clickEvt.preventDefault();
           mapPinMain.removeEventListener(`click`, onClickPreventDefault);
         };
@@ -125,7 +125,7 @@
     document.addEventListener(`mouseup`, onMouseUp);
   });
 
-  const closeCard = function () {
+  const closeCard = () => {
     window.card.close();
   };
 

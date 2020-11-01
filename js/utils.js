@@ -1,7 +1,7 @@
 'use strict';
-(function () {
+(() => {
 
-  const showError = function (errorMessage) {
+  const showError = (errorMessage) => {
     const node = document.createElement(`div`);
     node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
     node.style.position = `absolute`;
@@ -12,28 +12,28 @@
     node.textContent = errorMessage;
     document.body.insertAdjacentElement(`afterbegin`, node);
   };
-  const disableArrayElements = function (array, disable) {
+  const disableArrayElements = (array, disable) => {
     for (let i = 0; i < array.length; i++) {
       array[i].disabled = disable;
     }
   };
 
-  const getRandomInInterval = function (min, max) {
+  const getRandomInInterval = (min, max) => {
     let rand = min + Math.random() * (max + 1 - min);
 
     return Math.floor(rand);
   };
 
-  const getRandomInt = function (max) {
+  const getRandomInt = (max) => {
     return Math.floor(Math.random() * (max));
   };
 
-  const getRandomArrayElement = function (array) {
+  const getRandomArrayElement = (array) => {
     return array[getRandomInt(array.length)];
   };
 
 
-  const getRandomLengthArray = function (sourcArray) {
+  const getRandomLengthArray = (sourcArray) => {
     let length = getRandomInt(sourcArray.length);
     let resultArr = [];
 

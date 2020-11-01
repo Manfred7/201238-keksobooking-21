@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+(() => {
 
   const StatusCode = {
     OK: 200,
@@ -10,12 +10,12 @@
   const RESPONSE_TYPE = `json`;
   const URL = `https://21.javascript.pages.academy/keksobooking`;
 
-  const getRequest = function (onSuccess, onError) {
+  const getRequest = (onSuccess, onError) => {
     let xhr = new XMLHttpRequest();
     xhr.responseType = RESPONSE_TYPE;
     xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.addEventListener(`load`, function () {
+    xhr.addEventListener(`load`, () => {
       if (xhr.status === StatusCode.OK) {
         onSuccess(xhr.response);
       } else if (xhr.status === StatusCode.BAD_REQUEST) {
@@ -25,23 +25,23 @@
       }
     });
 
-    xhr.addEventListener(`error`, function () {
+    xhr.addEventListener(`error`, () => {
       onError(`Произошла ошибка соединения`);
     });
-    xhr.addEventListener(`timeout`, function () {
+    xhr.addEventListener(`timeout`, () => {
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
 
     return xhr;
   };
 
-  const uploadToServer = function (data, onSuccess, onError) {
+  const uploadToServer = (data, onSuccess, onError) => {
     const xhr = getRequest(onSuccess, onError);
     xhr.open(`POST`, URL);
     xhr.send(data);
   };
 
-  const loadFromServer = function (onSuccess, onError) {
+  const loadFromServer = (onSuccess, onError) => {
     const dataURL = URL + `/data`;
     const xhr = getRequest(onSuccess, onError);
     xhr.open(`GET`, dataURL);

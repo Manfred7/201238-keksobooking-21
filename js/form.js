@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+(() => {
 
   const TITLE_MIN_LENGTH = 30;
   const TITLE_MAX_LENGTH = 30;
@@ -10,9 +10,22 @@
   const PALACE_MIN_PRICE = 10000;
   const MAX_PRICE = 1000000;
   const AVATAR_DEFAULT_IMAGE = `img/muffin-grey.svg`;
+  const RoomCount = {
+    ONE: `1`,
+    TWO: `2`,
+    THREE: `3`,
+    HUNDRED: `100`
+  };
+
+  const CapacityVariants = {
+    ONE: `1`,
+    TWO: `2`,
+    THREE: `3`,
+    ZERO: `0`
+  };
 
   const mapPinMain = document.querySelector(`.map__pin--main`);
-  const DELTA_X = mapPinMain.offsetWidth / 2;
+  const DELTA_X = Math.floor(mapPinMain.offsetWidth / 2);
   const DELTA_Y = mapPinMain.offsetHeight;
 
   const adForm = document.querySelector(`.ad-form`);
@@ -29,11 +42,11 @@
 
   const addressControl = document.querySelector(`#address`);
 
-  const setAddresCoord = function (x, y) {
+  const setAddresCoord = (x, y) => {
     addressControl.value = `${x},${y}`;
   };
 
-  const setInnactiveCoord = function () {
+  const setInnactiveCoord = () => {
     const mapPinCenterX = mapPinMain.offsetLeft + DELTA_X;
     const mapPinCenterY = mapPinMain.offsetTop + Math.floor(DELTA_Y / 2);
     setAddresCoord(mapPinCenterX, mapPinCenterY);
@@ -50,7 +63,7 @@
       const mapPinY = mapPinMain.offsetTop - DELTA_Y;
       setAddresCoord(mapPinX, mapPinY);
     },
-    setActveState() {
+    setActiveState() {
       this.update();
     }
   };
@@ -66,7 +79,7 @@
   price.setAttribute(`max`, MAX_PRICE);
 
 
-  const setPriceMinLimit = function () {
+  const setPriceMinLimit = () => {
     switch (type.value) {
       case `bungalow`:
         price.setAttribute(`min`, BUNGALO_MIN_PRICE);
@@ -94,17 +107,17 @@
 
   setPriceMinLimit();
 
-  type.addEventListener(`change`, function () {
+  type.addEventListener(`change`, () => {
     setPriceMinLimit();
   });
 
   const timein = document.querySelector(`#timein`);
   const timeout = document.querySelector(`#timeout`);
-  timein.addEventListener(`change`, function () {
+  timein.addEventListener(`change`, () => {
     timeout.selectedIndex = timein.selectedIndex;
   });
 
-  timeout.addEventListener(`change`, function () {
+  timeout.addEventListener(`change`, () => {
     timein.selectedIndex = timeout.selectedIndex;
   });
 
@@ -112,27 +125,27 @@
   const capacity = document.querySelector(`#capacity`);
 
 
-  const validateRoomsGestAccordance = function (evt) {
+  const validateRoomsGestAccordance = (evt) => {
     let validityMessage = ``;
 
     switch (roomNumber.value) {
-      case `1`:
-        if (capacity.value !== `1`) {
+      case RoomCount.ONE:
+        if (capacity.value !== CapacityVariants.ONE) {
           validityMessage = `1 комната для 1 гостя!`;
         }
         break;
-      case `2`:
-        if (!((capacity.value === `1`) || (capacity.value === `2`))) {
+      case RoomCount.TWO:
+        if (!((capacity.value === CapacityVariants.ONE) || (capacity.value === CapacityVariants.TWO))) {
           validityMessage = `2 комнаты для 2 гостей или для 1 гостя!`;
         }
         break;
-      case `3`:
-        if (!((capacity.value === `1`) || (capacity.value === `2`) || (capacity.value === `3`))) {
+      case RoomCount.THREE:
+        if (!((capacity.value === CapacityVariants.ONE) || (capacity.value === CapacityVariants.TWO) || (capacity.value === CapacityVariants.THREE))) {
           validityMessage = `3 комнаты для 3 гостей, для 2 гостей или для 1 гостя!`;
         }
         break;
-      case `100`:
-        if (capacity.value !== `0`) {
+      case RoomCount.HUNDRED:
+        if (capacity.value !== CapacityVariants.ZERO) {
           validityMessage = `100 комнат не для гостей!`;
         }
         break;
@@ -148,11 +161,11 @@
   capacity.addEventListener(`change`, validateRoomsGestAccordance);
   roomNumber.addEventListener(`change`, validateRoomsGestAccordance);
 
-  const setDefaultAvatar = function () {
+  const setDefaultAvatar = () => {
     avatarPreview.src = AVATAR_DEFAULT_IMAGE;
   };
 
-  const setInnactive = function () {
+  const setInnactive = () => {
     window.utils.disableArrayElements(adFormFieldsets, true);
     adForm.classList.add(`ad-form--disabled`);
     address.setInnactiveState();
@@ -162,28 +175,28 @@
     setDefaultAvatar();
   };
 
-  const setActive = function () {
+  const setActive = () => {
     adForm.classList.remove(`ad-form--disabled`);
     window.utils.disableArrayElements(adFormFieldsets, false);
     capacity.selectedIndex = 2;
-    address.setActveState();
+    address.setActiveState();
   };
 
-  const initCloseMessage = function (element) {
+  const initCloseMessage = (element) => {
     let removeListeners = null;
 
-    const closeMsg = function () {
+    const closeMsg = () => {
       element.remove();
       removeListeners();
     };
 
-    const onBodyClick = function () {
+    const onBodyClick = () => {
       closeMsg();
     };
 
     document.body.addEventListener(`click`, onBodyClick);
 
-    const onPopupEscPress = function (evt) {
+    const onPopupEscPress = (evt) => {
       window.eventUtils.isEscEventWithPreventDefault(evt, closeMsg);
     };
 
@@ -195,13 +208,13 @@
       errorButton.addEventListener(`click`, onBodyClick);
     }
 
-    removeListeners = function () {
+    removeListeners = () => {
       document.body.removeEventListener(`click`, onBodyClick);
       document.body.removeEventListener(`keydown`, onPopupEscPress);
     };
 
   };
-  const showSuccesMsg = function () {
+  const showSuccesMsg = () => {
     const template = document.querySelector(`#success `)
       .content
       .querySelector(`.success`);
@@ -213,12 +226,12 @@
     initCloseMessage(element);
   };
 
-  const onSucces = function () {
+  const onSuccess = () => {
     window.map.setInnactive();
     showSuccesMsg();
   };
 
-  const showErrorMsg = function (errorMessage) {
+  const showErrorMsg = (errorMessage) => {
     const template = document.querySelector(`#error `)
       .content
       .querySelector(`.error`);
@@ -233,22 +246,22 @@
     initCloseMessage(element);
   };
 
-  const onError = function (errorMessage) {
+  const onError = (errorMessage) => {
     showErrorMsg(errorMessage);
   };
 
 
-  const submitHandler = function (evt) {
+  const submitHandler = (evt) => {
     let data = new FormData(adForm);
     data.append(`address`, addressControl.value);
-    window.backendAPI.save(data, onSucces, onError);
+    window.backendAPI.save(data, onSuccess, onError);
     evt.preventDefault();
   };
   adForm.addEventListener(`submit`, submitHandler);
 
   const resetButton = adForm.querySelector(`.ad-form__reset`);
 
-  const resetHandler = function (evt) {
+  const resetHandler = (evt) => {
     window.map.setInnactive();
     evt.preventDefault();
   };

@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+(() => {
 
   const ESC_CODE = 27;
   const ENTER_CODE = 13;

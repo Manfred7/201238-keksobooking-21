@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+(() => {
 
   const NOT_FOUND = -1;
 
@@ -13,9 +13,9 @@
   let popupCard = null;
   const mapFilterContainer = document.querySelector(`.map__filters-container`);
 
-  const showFeatures = function (ad, element) {
+  const showFeatures = (ad, element) => {
 
-    const removeIfNotFound = function (features, searchValue, node) {
+    const removeIfNotFound = (features, searchValue, node) => {
       if (features.indexOf(searchValue) === NOT_FOUND) {
         node.remove();
       }
@@ -42,7 +42,7 @@
     removeIfNotFound(ad.offer.features, window.globals.Features.CONDITIONER, featureConditioner);
   };
 
-  const showPhotos = function (ad, element) {
+  const showPhotos = (ad, element) => {
 
     const popupPhotos = element.querySelector(`.popup__photos`);
     let popupPhoto = popupPhotos.querySelector(`.popup__photo`);
@@ -56,7 +56,7 @@
     }
   };
 
-  const showTitle = function (ad, element) {
+  const showTitle = (ad, element) => {
     let popupTitle = element.querySelector(`.popup__title`);
     if (ad.offer.title !== ``) {
       popupTitle.innerText = ad.offer.title;
@@ -65,7 +65,7 @@
     }
   };
 
-  const showTextAddress = function (ad, element) {
+  const showTextAddress = (ad, element) => {
     let popupTextAddress = element.querySelector(`.popup__text--address`);
     popupTextAddress.innerText = ad.offer.address;
     if (ad.offer.address === ``) {
@@ -73,7 +73,7 @@
     }
   };
 
-  const showTextPrice = function (ad, element) {
+  const showTextPrice = (ad, element) => {
     let popupTextPrice = element.querySelector(`.popup__text--price`);
     popupTextPrice.innerText = `${ad.offer.price}₽/ночь`;
 
@@ -82,7 +82,7 @@
     }
   };
 
-  const showPopupType = function (ad, element) {
+  const showPopupType = (ad, element) => {
     let popupType = element.querySelector(`.popup__type`);
     if (ad.offer.type !== ``) {
       popupType.innerText = OfferTypeDict[ad.offer.type.toString().toUpperCase()];
@@ -91,7 +91,7 @@
     }
   };
 
-  const showPopupCapacity = function (ad, element) {
+  const showPopupCapacity = (ad, element) => {
     let popupCapacity = element.querySelector(`.popup__text--capacity`);
 
     if ((ad.offer.rooms !== ``) && (ad.offer.guests !== ``)) {
@@ -101,7 +101,7 @@
     }
   };
 
-  const showPopupTextTime = function (ad, element) {
+  const showPopupTextTime = (ad, element) => {
     let popupTextTime = element.querySelector(`.popup__text--time`);
 
     if ((ad.offer.checkin !== ``) && (ad.offer.checkout !== ``)) {
@@ -111,7 +111,7 @@
     }
   };
 
-  const showDescription = function (ad, element) {
+  const showDescription = (ad, element) => {
     let popupDescription = element.querySelector(`.popup__description`);
 
     if (ad.offer.description !== ``) {
@@ -121,7 +121,7 @@
     }
   };
 
-  const showAvatar = function (ad, element) {
+  const showAvatar = (ad, element) => {
     let popupAvatar = element.querySelector(`.popup__avatar`);
 
     if (ad.author.avatar !== ``) {
@@ -131,7 +131,7 @@
     }
   };
 
-  const renderAd = function (template, ad) {
+  const renderAd = (template, ad) => {
     let adElement = template.cloneNode(true);
 
     showTitle(ad, adElement);
@@ -148,7 +148,7 @@
     return adElement;
   };
 
-  const makeFragment = function (ad) {
+  const makeFragment = (ad) => {
     const cardTemplate = document.querySelector(`#card`)
       .content
       .querySelector(`.popup`);
@@ -159,33 +159,33 @@
     return fragment;
   };
 
-  const createCard = function (pinData) {
+  const createCard = (pinData) => {
     const cardFragment = makeFragment(pinData);
 
     return mapFilterContainer.parentElement.appendChild(cardFragment);
   };
 
-  const onPopupEscPress = function (evt) {
+  const onPopupEscPress = (evt) => {
     window.eventUtils.isEscEventWithPreventDefault(evt, closeCard);
   };
 
-  const setPopupListeners = function () {
+  const setPopupListeners = () => {
     const popup = document.querySelector(`.popup`);
     document.addEventListener(`keydown`, onPopupEscPress);
 
     const popupClose = popup.querySelector(`.popup__close`);
 
-    popupClose.addEventListener(`keydown`, function (evt) {
+    popupClose.addEventListener(`keydown`, (evt) => {
       window.eventUtils.isEnterEvent(evt, closeCard);
     });
 
-    popupClose.addEventListener(`click`, function () {
+    popupClose.addEventListener(`click`, () => {
       closeCard();
     });
 
   };
 
-  const showCard = function (obj) {
+  const showCard = (obj) => {
     if (popupCard !== null) {
       closeCard();
     }
@@ -195,7 +195,7 @@
     setPopupListeners();
   };
 
-  const closeCard = function () {
+  const closeCard = () => {
     const popup = document.querySelector(`.popup`);
     if (popup !== null) {
       popup.remove();
