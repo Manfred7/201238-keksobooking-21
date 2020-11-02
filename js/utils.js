@@ -12,6 +12,7 @@
     node.textContent = errorMessage;
     document.body.insertAdjacentElement(`afterbegin`, node);
   };
+
   const disableArrayElements = (array, disable) => {
     for (let i = 0; i < array.length; i++) {
       array[i].disabled = disable;
@@ -24,14 +25,9 @@
     return Math.floor(rand);
   };
 
-  const getRandomInt = (max) => {
-    return Math.floor(Math.random() * (max));
-  };
+  const getRandomInt = (max) => Math.floor(Math.random() * (max));
 
-  const getRandomArrayElement = (array) => {
-    return array[getRandomInt(array.length)];
-  };
-
+  const getRandomArrayElement = (array) => array[getRandomInt(array.length)];
 
   const getRandomLengthArray = (sourcArray) => {
     let length = getRandomInt(sourcArray.length);

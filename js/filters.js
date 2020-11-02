@@ -29,11 +29,7 @@
   const inputConditioner = fieldsetMapFeatures.querySelector(`#filter-conditioner`);
 
   const getOnlyWithOffer = (pins) => {
-    const onlyWithOfferPins = pins.filter((pin) => {
-      return ((pin.offer !== undefined) && (pin.offer !== null));
-    });
-
-    return onlyWithOfferPins;
+    return pins.filter((pin) => ((pin.offer !== undefined) && (pin.offer !== null)));
   };
 
   const getTop5Pins = (arr) => {
@@ -146,8 +142,8 @@
 
   const applyFilter = () => {
     window.debounce(filterPins);
-
   };
+
   const setInnactiveState = () => {
     mapFilters.classList.add(`map__filters--disabled`);
     window.utils.disableArrayElements(mapFiltersFieldsets, true);

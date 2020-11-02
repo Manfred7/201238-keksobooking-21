@@ -10,6 +10,8 @@
   const PALACE_MIN_PRICE = 10000;
   const MAX_PRICE = 1000000;
   const AVATAR_DEFAULT_IMAGE = `img/muffin-grey.svg`;
+  const ONE_CAPACITY_INDEX = 2;
+
   const RoomCount = {
     ONE: `1`,
     TWO: `2`,
@@ -178,7 +180,7 @@
   const setActive = () => {
     adForm.classList.remove(`ad-form--disabled`);
     window.utils.disableArrayElements(adFormFieldsets, false);
-    capacity.selectedIndex = 2;
+    capacity.selectedIndex = ONE_CAPACITY_INDEX;
     address.setActiveState();
   };
 

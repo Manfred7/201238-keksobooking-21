@@ -6,7 +6,7 @@
   window.debounce = (cb) => {
     let lastTimeout = null;
 
-    const innerHandler = (...parameters) => {
+    const innerDebounce = (...parameters) => {
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
       }
@@ -15,6 +15,6 @@
       }, DEBOUNCE_INTERVAL);
     };
 
-    return innerHandler();
+    return innerDebounce();
   };
 })();
