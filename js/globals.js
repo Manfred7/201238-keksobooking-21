@@ -5,7 +5,7 @@
   const Features = {
     WIFI: `wifi`,
     DISHWASHER: `dishwasher`,
-    PARKING: `filter-parking`,
+    PARKING: `parking`,
     WASHER: `washer`,
     CONDITIONER: `conditioner`,
     ELEVATOR: `elevator`
