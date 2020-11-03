@@ -1,5 +1,3 @@
 'use strict';
-(() => {
-  window.map.setInnactive();
-})();
 
+window.map.setInnactive();

@@ -1,211 +1,211 @@
 'use strict';
-(() => {
 
-  const NOT_FOUND = -1;
 
-  const OfferTypeDict = {
-    FLAT: `Квартира`,
-    BUNGALOW: `Бунгало`,
-    HOUSE: `Дом`,
-    PALACE: `Дворец`
-  };
+const NOT_FOUND = -1;
 
-  let popupCard = null;
-  const mapFilterContainer = document.querySelector(`.map__filters-container`);
+const OfferTypeDict = {
+  FLAT: `Квартира`,
+  BUNGALOW: `Бунгало`,
+  HOUSE: `Дом`,
+  PALACE: `Дворец`
+};
 
-  const showFeatures = (ad, element) => {
+let popupCard = null;
+const mapFilterContainer = document.querySelector(`.map__filters-container`);
 
-    const removeIfNotFound = (features, searchValue, node) => {
-      if (features.indexOf(searchValue) === NOT_FOUND) {
-        node.remove();
-      }
-    };
+const showFeatures = (ad, element) => {
 
-    const popupFeatures = element.querySelector(`.popup__features`);
-
-    const featureWifi = popupFeatures.querySelector(`.popup__feature--wifi`);
-    removeIfNotFound(ad.offer.features, window.globals.Features.WIFI, featureWifi);
-
-    const featureDishwasher = popupFeatures.querySelector(`.popup__feature--dishwasher`);
-    removeIfNotFound(ad.offer.features, window.globals.Features.DISHWASHER, featureDishwasher);
-
-    const featureParking = popupFeatures.querySelector(`.popup__feature--parking`);
-    removeIfNotFound(ad.offer.features, window.globals.Features.PARKING, featureParking);
-
-    const featureWasher = popupFeatures.querySelector(`.popup__feature--washer`);
-    removeIfNotFound(ad.offer.features, window.globals.Features.WASHER, featureWasher);
-
-    const featureElevator = popupFeatures.querySelector(`.popup__feature--elevator`);
-    removeIfNotFound(ad.offer.features, window.globals.Features.ELEVATOR, featureElevator);
-
-    const featureConditioner = popupFeatures.querySelector(`.popup__feature--conditioner`);
-    removeIfNotFound(ad.offer.features, window.globals.Features.CONDITIONER, featureConditioner);
-  };
-
-  const showPhotos = (ad, element) => {
-
-    const popupPhotos = element.querySelector(`.popup__photos`);
-    let popupPhoto = popupPhotos.querySelector(`.popup__photo`);
-
-    popupPhoto.remove();
-
-    for (let i = 0; i < ad.offer.photos.length; i++) {
-      let newPhoto = popupPhoto.cloneNode(false);
-      newPhoto.src = ad.offer.photos[i];
-      popupPhotos.appendChild(newPhoto);
+  const removeIfNotFound = (features, searchValue, node) => {
+    if (features.indexOf(searchValue) === NOT_FOUND) {
+      node.remove();
     }
   };
 
-  const showTitle = (ad, element) => {
-    let popupTitle = element.querySelector(`.popup__title`);
-    if (ad.offer.title !== ``) {
-      popupTitle.innerText = ad.offer.title;
-    } else {
-      popupTitle.remove();
-    }
-  };
+  const popupFeatures = element.querySelector(`.popup__features`);
 
-  const showTextAddress = (ad, element) => {
-    let popupTextAddress = element.querySelector(`.popup__text--address`);
-    popupTextAddress.innerText = ad.offer.address;
-    if (ad.offer.address === ``) {
-      popupTextAddress.remove();
-    }
-  };
+  const featureWifi = popupFeatures.querySelector(`.popup__feature--wifi`);
+  removeIfNotFound(ad.offer.features, window.globals.Features.WIFI, featureWifi);
 
-  const showTextPrice = (ad, element) => {
-    let popupTextPrice = element.querySelector(`.popup__text--price`);
-    popupTextPrice.innerText = `${ad.offer.price}₽/ночь`;
+  const featureDishwasher = popupFeatures.querySelector(`.popup__feature--dishwasher`);
+  removeIfNotFound(ad.offer.features, window.globals.Features.DISHWASHER, featureDishwasher);
 
-    if (ad.offer.price === ``) {
-      popupTextPrice.remove();
-    }
-  };
+  const featureParking = popupFeatures.querySelector(`.popup__feature--parking`);
+  removeIfNotFound(ad.offer.features, window.globals.Features.PARKING, featureParking);
 
-  const showPopupType = (ad, element) => {
-    let popupType = element.querySelector(`.popup__type`);
-    if (ad.offer.type !== ``) {
-      popupType.innerText = OfferTypeDict[ad.offer.type.toString().toUpperCase()];
-    } else {
-      popupType.remove();
-    }
-  };
+  const featureWasher = popupFeatures.querySelector(`.popup__feature--washer`);
+  removeIfNotFound(ad.offer.features, window.globals.Features.WASHER, featureWasher);
 
-  const showPopupCapacity = (ad, element) => {
-    let popupCapacity = element.querySelector(`.popup__text--capacity`);
+  const featureElevator = popupFeatures.querySelector(`.popup__feature--elevator`);
+  removeIfNotFound(ad.offer.features, window.globals.Features.ELEVATOR, featureElevator);
 
-    if ((ad.offer.rooms !== ``) && (ad.offer.guests !== ``)) {
-      popupCapacity.innerText = `${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`;
-    } else {
-      popupCapacity.remove();
-    }
-  };
+  const featureConditioner = popupFeatures.querySelector(`.popup__feature--conditioner`);
+  removeIfNotFound(ad.offer.features, window.globals.Features.CONDITIONER, featureConditioner);
+};
 
-  const showPopupTextTime = (ad, element) => {
-    let popupTextTime = element.querySelector(`.popup__text--time`);
+const showPhotos = (ad, element) => {
 
-    if ((ad.offer.checkin !== ``) && (ad.offer.checkout !== ``)) {
-      popupTextTime.innerText = `Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout}`;
-    } else {
-      popupTextTime.remove();
-    }
-  };
+  const popupPhotos = element.querySelector(`.popup__photos`);
+  let popupPhoto = popupPhotos.querySelector(`.popup__photo`);
 
-  const showDescription = (ad, element) => {
-    let popupDescription = element.querySelector(`.popup__description`);
+  popupPhoto.remove();
 
-    if (ad.offer.description !== ``) {
-      popupDescription.innerText = ad.offer.description;
-    } else {
-      popupDescription.remove();
-    }
-  };
+  for (let i = 0; i < ad.offer.photos.length; i++) {
+    let newPhoto = popupPhoto.cloneNode(false);
+    newPhoto.src = ad.offer.photos[i];
+    popupPhotos.appendChild(newPhoto);
+  }
+};
 
-  const showAvatar = (ad, element) => {
-    let popupAvatar = element.querySelector(`.popup__avatar`);
+const showTitle = (ad, element) => {
+  let popupTitle = element.querySelector(`.popup__title`);
+  if (ad.offer.title !== ``) {
+    popupTitle.innerText = ad.offer.title;
+  } else {
+    popupTitle.remove();
+  }
+};
 
-    if (ad.author.avatar !== ``) {
-      popupAvatar.src = ad.author.avatar;
-    } else {
-      popupAvatar.remove();
-    }
-  };
+const showTextAddress = (ad, element) => {
+  let popupTextAddress = element.querySelector(`.popup__text--address`);
+  popupTextAddress.innerText = ad.offer.address;
+  if (ad.offer.address === ``) {
+    popupTextAddress.remove();
+  }
+};
 
-  const renderAd = (template, ad) => {
-    let adElement = template.cloneNode(true);
+const showTextPrice = (ad, element) => {
+  let popupTextPrice = element.querySelector(`.popup__text--price`);
+  popupTextPrice.innerText = `${ad.offer.price}₽/ночь`;
 
-    showTitle(ad, adElement);
-    showTextAddress(ad, adElement);
-    showTextPrice(ad, adElement);
-    showPopupType(ad, adElement);
-    showPopupCapacity(ad, adElement);
-    showPopupTextTime(ad, adElement);
-    showFeatures(ad, adElement);
-    showDescription(ad, adElement);
-    showPhotos(ad, adElement);
-    showAvatar(ad, adElement);
+  if (ad.offer.price === ``) {
+    popupTextPrice.remove();
+  }
+};
 
-    return adElement;
-  };
+const showPopupType = (ad, element) => {
+  let popupType = element.querySelector(`.popup__type`);
+  if (ad.offer.type !== ``) {
+    popupType.innerText = OfferTypeDict[ad.offer.type.toString().toUpperCase()];
+  } else {
+    popupType.remove();
+  }
+};
 
-  const makeFragment = (ad) => {
-    const cardTemplate = document.querySelector(`#card`)
-      .content
-      .querySelector(`.popup`);
+const showPopupCapacity = (ad, element) => {
+  let popupCapacity = element.querySelector(`.popup__text--capacity`);
 
-    const fragment = document.createDocumentFragment();
-    fragment.appendChild(renderAd(cardTemplate, ad));
+  if ((ad.offer.rooms !== ``) && (ad.offer.guests !== ``)) {
+    popupCapacity.innerText = `${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`;
+  } else {
+    popupCapacity.remove();
+  }
+};
 
-    return fragment;
-  };
+const showPopupTextTime = (ad, element) => {
+  let popupTextTime = element.querySelector(`.popup__text--time`);
 
-  const createCard = (pinData) => {
-    const cardFragment = makeFragment(pinData);
+  if ((ad.offer.checkin !== ``) && (ad.offer.checkout !== ``)) {
+    popupTextTime.innerText = `Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout}`;
+  } else {
+    popupTextTime.remove();
+  }
+};
 
-    return mapFilterContainer.parentElement.appendChild(cardFragment);
-  };
+const showDescription = (ad, element) => {
+  let popupDescription = element.querySelector(`.popup__description`);
 
-  const onPopupEscPress = (evt) => {
-    window.eventUtils.isEscEventWithPreventDefault(evt, closeCard);
-  };
+  if (ad.offer.description !== ``) {
+    popupDescription.innerText = ad.offer.description;
+  } else {
+    popupDescription.remove();
+  }
+};
 
-  const setPopupListeners = () => {
-    const popup = document.querySelector(`.popup`);
-    document.addEventListener(`keydown`, onPopupEscPress);
+const showAvatar = (ad, element) => {
+  let popupAvatar = element.querySelector(`.popup__avatar`);
 
-    const popupClose = popup.querySelector(`.popup__close`);
+  if (ad.author.avatar !== ``) {
+    popupAvatar.src = ad.author.avatar;
+  } else {
+    popupAvatar.remove();
+  }
+};
 
-    popupClose.addEventListener(`keydown`, (evt) => {
-      window.eventUtils.isEnterEvent(evt, closeCard);
-    });
+const renderAd = (template, ad) => {
+  let adElement = template.cloneNode(true);
 
-    popupClose.addEventListener(`click`, () => {
-      closeCard();
-    });
+  showTitle(ad, adElement);
+  showTextAddress(ad, adElement);
+  showTextPrice(ad, adElement);
+  showPopupType(ad, adElement);
+  showPopupCapacity(ad, adElement);
+  showPopupTextTime(ad, adElement);
+  showFeatures(ad, adElement);
+  showDescription(ad, adElement);
+  showPhotos(ad, adElement);
+  showAvatar(ad, adElement);
 
-  };
+  return adElement;
+};
 
-  const showCard = (obj) => {
-    if (popupCard !== null) {
-      closeCard();
-    }
+const makeFragment = (ad) => {
+  const cardTemplate = document.querySelector(`#card`)
+    .content
+    .querySelector(`.popup`);
 
-    popupCard = createCard(obj.data);
-    window.mapPins.markActive(obj.element);
-    setPopupListeners();
-  };
+  const fragment = document.createDocumentFragment();
+  fragment.appendChild(renderAd(cardTemplate, ad));
 
-  const closeCard = () => {
-    const popup = document.querySelector(`.popup`);
-    if (popup !== null) {
-      popup.remove();
-    }
-    document.removeEventListener(`keydown`, onPopupEscPress);
-  };
+  return fragment;
+};
 
-  window.card = {
-    show: showCard,
-    close: closeCard
-  };
+const createCard = (pinData) => {
+  const cardFragment = makeFragment(pinData);
 
-})();
+  return mapFilterContainer.parentElement.appendChild(cardFragment);
+};
+
+const onPopupEscPress = (evt) => {
+  window.eventUtils.isEscEventWithPreventDefault(evt, closeCard);
+};
+
+const setPopupListeners = () => {
+  const popup = document.querySelector(`.popup`);
+  document.addEventListener(`keydown`, onPopupEscPress);
+
+  const popupClose = popup.querySelector(`.popup__close`);
+
+  popupClose.addEventListener(`keydown`, (evt) => {
+    window.eventUtils.isEnterEvent(evt, closeCard);
+  });
+
+  popupClose.addEventListener(`click`, () => {
+    closeCard();
+  });
+
+};
+
+const showCard = (obj) => {
+  if (popupCard !== null) {
+    closeCard();
+  }
+
+  popupCard = createCard(obj.data);
+  window.mapPins.markActive(obj.element);
+  setPopupListeners();
+};
+
+const closeCard = () => {
+  const popup = document.querySelector(`.popup`);
+  if (popup !== null) {
+    popup.remove();
+  }
+  document.removeEventListener(`keydown`, onPopupEscPress);
+};
+
+window.card = {
+  show: showCard,
+  close: closeCard
+};
+
+
